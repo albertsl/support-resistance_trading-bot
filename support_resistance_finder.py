@@ -1,3 +1,7 @@
+# Class that encapsulates the finding of supports and resistances.
+# Author: Albert Sanchez
+# May 2018
+
 class Support_Resistance_Finder:
      def __init__(self):
          pass

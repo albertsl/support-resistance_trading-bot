@@ -1,3 +1,7 @@
+# Main file of the project. This file is pretended to run the code.
+# Author: Albert Sanchez
+# May 2018
+
 # We have to decide how do we structure our datasets
 # We will create different categories of assets. To start with:
 # - USA stocks
@@ -15,8 +19,6 @@ from data_gathering import Data_Gatherer
 
 def main():
     dg = Data_Gatherer()
-
-
 
 if __name__ == "__main__":
     main()

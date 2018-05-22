@@ -1,3 +1,6 @@
+# Class that encapsulates the gathering of the data.
+# Author: Albert Sanchez
+# May 2018
 
 class Data_Gatherer:
     def __init__(self):
@@ -30,7 +33,3 @@ class Data_Gatherer:
         goes to the repository (directory) and loads the data into a data frame
         """
         pass
-
-
-
-
