@@ -19,7 +19,7 @@ def main():
     asset_categories = ['USAstocks','EUROPEANstocks','SPANISHstocks','FOREX','CRYPTO','COMMODITIES']
 
     dg = Data_Gatherer()
-    dg.download_data('AAPL','USAstocks', start_date,end_date,1)
+    dg.get_data('GLW','USAstocks', start_date,end_date,1)
 
 if __name__ == "__main__":
     main()

@@ -31,17 +31,24 @@ class Data_Gatherer:
         df.to_csv(file)
         return file
 
-    def get_data(self, ticker, start_time, end_time, resolution):
+    def get_data(self, ticker, category, start_time, end_time, resolution):
         """
-        :param ticker:
-        :param start_time:
-        :param end_time:
-        :param resolution:
+        :param ticker: identifier of the asset (String)
+        :param category: used to divide assets in different categories (String)
+        :param start_time: datetime
+        :param end_time: datetime
+        :param resolution: granularity of the datetime
         :return: data frame with the requested data
 
-        goes to the repository (directory) and loads the data into a data frame
+        goes to the repository (directory) and loads the data into a data frameself.
+        If the data does not exists, it downloads it.
+
         """
-        pass
+        file = self.get_file_path(ticker, category)
+        if not exists(file):
+            self.download_data(ticker, category, start_time, end_time, resolution)
+
+        return pd.read_csv(file)
 
     def get_file_path(self, ticker, category):
         """
