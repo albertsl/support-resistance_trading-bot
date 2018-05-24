@@ -3,7 +3,7 @@
 # May 2018
 
 import matplotlib.pyplot as plt
-import seaborn as sns
+# import seaborn as sns
 from datetime import datetime
 
 class Data_Visualizer:
@@ -33,9 +33,14 @@ class Data_Visualizer:
 
          """
 
-         plt.plot(data['Close'],'k')
-         plt.plot(data['High'], 'g')
-         plt.plot(data['Low'], 'r')
-         plt.plot(data['Open'], '#404040')
-         # plt.plot(data['Volume'])
+         fig, axs = plt.subplots(2, 1, sharex=True)
+         # Remove horizontal space between axes
+         fig.subplots_adjust(hspace=0)
+
+         axs[0].plot(data['Close'],'k')
+         axs[0].plot(data['High'], 'g')
+         axs[0].plot(data['Low'], 'r')
+         axs[0].plot(data['Open'], '#404040')
+         axs[1].plot(data['Volume'])
+
          plt.show()
