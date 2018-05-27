@@ -10,17 +10,19 @@ class Support_Resistance_Finder:
      def __init__(self):
          pass
 
-     def find_supports(self, price_sequence):
+     def find_supports(self, price_sequence, method):
          """
          :param price_sequence:
+         :param method: string with the name of the method used to find resistances
          :return: a list of tuples (m,b,p) defining the line equations of the lines found,
          plus a number p defining the likelihood of that line.
          """
          pass
 
-     def find_resistances(self, price_sequence):
+     def find_resistances(self, price_sequence, method):
          """
          :param price_sequence:
+         :param method: string with the name of the method used to find resistances
          :return: a list of tuples (m,b,p) defining the line equations of the lines found,
          plus a number p defining the likelihood of that line.
          """
