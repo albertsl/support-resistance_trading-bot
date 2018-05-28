@@ -44,3 +44,21 @@ class Data_Visualizer:
          axs[1].plot(data['Volume'])
 
          plt.show()
+
+     def compare_time_series(self, series1, series2):
+         """
+         :param series1: data for series1 (Pandas Series format)
+         :param series2: data for series2 (Pandas Series format)
+         :return: returns nothing. Shows a plot of the two time series.
+
+         Create a chart with both time series.
+         """
+
+         fig, axs = plt.subplots(2, 1, sharex=True)
+         # Remove horizontal space between axes
+         fig.subplots_adjust(hspace=0)
+
+         axs[0].plot(series1)
+         axs[1].plot(series2)
+
+         plt.show()
