@@ -33,8 +33,6 @@ def albert_tests():
     start_date = datetime(year = start_year, month = start_month, day = start_day)
     end_date = datetime(year = end_year, month = end_month, day = end_day)
 
-    asset_categories = ['USAstocks','EUROPEANstocks','SPANISHstocks','FOREX','CRYPTO','COMMODITIES']
-
     dg = Data_Gatherer()
     df = dg.get_data('GLW','USAstocks', start_date,end_date,1)
 
