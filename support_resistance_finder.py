@@ -28,7 +28,8 @@ class Support_Resistance_Finder:
         - mean_shift_clustering: Use the mean shift clustering algorithm
         - so: Use algorithm found on Stackoverflow
         """
-        pass
+        if method == "elementary":
+            self._elementary_method(price_sequence)
 
     def find_resistances(self, price_sequence, method):
         """
@@ -49,8 +50,12 @@ class Support_Resistance_Finder:
         pass
 
     # Methods for finding resistances and supports
-    def _elementary_method(self, price_sequence):
-        pass
+    def _elementary_method(self, price_sequence, threshold=0.005):
+        # Find turning points
+        derivative = abs(self._derivative(price_sequence))
+        for element in derivative:
+            if element <= threshold:
+                print(element)
 
     def _volume_method(self, price_sequence):
         pass
@@ -70,21 +75,12 @@ class Support_Resistance_Finder:
     def _so(self, price_sequence):
         pass
 
-    # Other methods
+    # Other internal methods
     def _derivative(self, price_sequence):
         return pd.Series(np.gradient(price_sequence), price_sequence.index, name='slope')
 
-
-    def test_derivative(self):
-        #Let's try to plot the derivative of 2x+1
-        # x = np.linspace(0, 100)
-        # y = (2*x)+1
-        # s1 = pd.Series(y)
-        # s2 = self._derivative(s1)
-        # print(s2)
-        # dv.compare_time_series(s1, s2)
-        # #It's working!
-
+    # Testing methods
+    def _get_test_data(self):
         start_year = 2016
         start_month = 1
         start_day = 1
@@ -100,11 +96,28 @@ class Support_Resistance_Finder:
         s = df['High'] # I only use high for testing purposes
 
         sp = Signal_Processor()
-        s = sp.filter_signal(s)
-        derivative = self._derivative(s)
+        return s, sp.filter_signal(s)
+
+    def test_derivative(self):
+        #Let's try to plot the derivative of 2x+1
+        # x = np.linspace(0, 100)
+        # y = (2*x)+1
+        # s1 = pd.Series(y)
+        # s2 = self._derivative(s1)
+        # print(s2)
+        # dv.compare_time_series(s1, s2)
+        # #It's working!
+
+        s, sfiltered = self._get_test_data()
+        derivative = self._derivative(sfiltered)
 
         dv = Data_Visualizer()
-        dv.compare_time_series(s, derivative)
+        dv.compare_time_series(sfiltered, derivative)
+
+    def test_support_finder(self):
+        s, sfiltered = self._get_test_data()
+
+        self.find_supports(s,"elementary")
 
 if __name__ == "__main__":
     from data_gathering import Data_Gatherer
@@ -113,4 +126,5 @@ if __name__ == "__main__":
     from datetime import datetime
 
     srf = Support_Resistance_Finder()
-    srf.test_derivative()
+    # srf.test_derivative()
+    srf.test_support_finder()
