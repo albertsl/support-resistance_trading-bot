@@ -5,6 +5,7 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from scipy import signal
 
 from data_gathering import Data_Gatherer
@@ -48,7 +49,7 @@ class Signal_Processor:
         :param filter_type: Filter to be applied: Gaussian, Fourier, etc.
         :return: filtered sequence
         """
-        return self._filter(price_sequence)
+        return pd.Series(self._filter(price_sequence))
 
     def _show_side_by_side(self):
         sgnH, sgnL, sgnC = self._generate_syntethic_signal()
