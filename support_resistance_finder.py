@@ -6,6 +6,9 @@
 # We have to decide if we treat supports and resistances as a discrete value or as a range of values and if we add a confidence interval that this is a support/resistances
 # Should we indicate in the data which are the maximum and minimum values used by our algorithm to decide that a certain price level is a supp/resistance
 
+import numpy as np
+import pandas as pd
+
 class Support_Resistance_Finder:
     def __init__(self):
         pass
@@ -45,10 +48,11 @@ class Support_Resistance_Finder:
         """
         pass
 
+    # Methods for finding resistances and supports
     def _elementary_method(self, price_sequence):
         pass
 
-    def _volume method(self, price_sequence):
+    def _volume_method(self, price_sequence):
         pass
 
     def _trendline(self, price_sequence):
@@ -65,3 +69,48 @@ class Support_Resistance_Finder:
 
     def _so(self, price_sequence):
         pass
+
+    # Other methods
+    def _derivative(self, price_sequence):
+        return pd.Series(np.gradient(price_sequence), price_sequence.index, name='slope')
+
+
+    def test_derivative(self):
+        #Let's try to plot the derivative of 2x+1
+        # x = np.linspace(0, 100)
+        # y = (2*x)+1
+        # s1 = pd.Series(y)
+        # s2 = self._derivative(s1)
+        # print(s2)
+        # dv.compare_time_series(s1, s2)
+        # #It's working!
+
+        start_year = 2016
+        start_month = 1
+        start_day = 1
+        end_year = 2018
+        end_month = 1
+        end_day = 1
+
+        start_date = datetime(year = start_year, month = start_month, day = start_day)
+        end_date = datetime(year = end_year, month = end_month, day = end_day)
+
+        dg = Data_Gatherer()
+        df = dg.get_data('GLW','USAstocks', start_date,end_date,1)
+        s = df['High'] # I only use high for testing purposes
+
+        sp = Signal_Processor()
+        s = sp.filter_signal(s)
+        derivative = self._derivative(s)
+
+        dv = Data_Visualizer()
+        dv.compare_time_series(s, derivative)
+
+if __name__ == "__main__":
+    from data_gathering import Data_Gatherer
+    from visualization import Data_Visualizer
+    from signal_processing import Signal_Processor
+    from datetime import datetime
+
+    srf = Support_Resistance_Finder()
+    srf.test_derivative()
