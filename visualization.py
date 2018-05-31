@@ -19,12 +19,7 @@ class Data_Visualizer:
 
         """
         ax = plt.axes()
-        ax.grid(color='silver')
-
-        plt.plot(data['Close'],'k')
-        plt.plot(data['High'], 'g')
-        plt.plot(data['Low'], 'r')
-        plt.plot(data['Open'], '#404040')
+        self._plot_price_ax(data,ax)
 
         for level in levels:
             ax.axhline(y=level)
@@ -40,7 +35,7 @@ class Data_Visualizer:
         Create a chart with the price data and the found supports and resistance for the given ticker
 
         """
-        fig, axs = self._plot_price_volume(data)
+        fig, axs = self._plot_price_volume_axs(data)
 
         for level in levels:
             axs[0].axhline(y=level)
@@ -60,37 +55,9 @@ class Data_Visualizer:
 
         """
 
-        self._plot_price_volume(data)
+        self._plot_price_volume_axs(data)
 
         plt.show()
-
-    def _plot_price_volume(self, data):
-        """
-        :param data: dataframe with all the data to plot
-        :return: returns nothing. Shows a plot of the price and the supports and resistances.
-
-        Create a chart with the price data for the given tickerself.
-        Close price - Black
-        High price - Green
-        Low price - Red
-        Open price - Dark grey
-
-        """
-
-        fig, axs = plt.subplots(2, 1, sharex=True)
-        # Remove horizontal space between axes
-        fig.subplots_adjust(hspace=0)
-
-        axs[0].grid(color='silver')
-        axs[1].grid(color='silver')
-
-        axs[0].plot(data['Close'],'k')
-        axs[0].plot(data['High'], 'g')
-        axs[0].plot(data['Low'], 'r')
-        axs[0].plot(data['Open'], '#404040')
-        axs[1].bar(x=range(len(data)),height=data['Volume'])
-
-        return fig, axs
 
     def compare_time_series(self, series1, series2):
         """
@@ -112,6 +79,40 @@ class Data_Visualizer:
         axs[1].plot(series2)
 
         plt.show()
+
+    def _plot_price_ax(self, data, ax):
+        ax.grid(color='silver')
+
+        ax.plot(data['Close'],'k')
+        ax.plot(data['High'], 'g')
+        ax.plot(data['Low'], 'r')
+        ax.plot(data['Open'], '#404040')
+        return ax
+
+    def _plot_price_volume_axs(self, data):
+        """
+        :param data: dataframe with all the data to plot
+        :return: returns nothing. Shows a plot of the price and the supports and resistances.
+
+        Create a chart with the price data for the given tickerself.
+        Close price - Black
+        High price - Green
+        Low price - Red
+        Open price - Dark grey
+
+        """
+
+        fig, axs = plt.subplots(2, 1, sharex=True)
+        # Remove horizontal space between axes
+        fig.subplots_adjust(hspace=0)
+
+        self._plot_price_ax(data,axs[0])
+
+        axs[1].grid(color='silver')
+        axs[1].bar(x=range(len(data)),height=data['Volume'])
+
+        return fig, axs
+
 
     def _get_test_data(self):
         start_year = 2017
