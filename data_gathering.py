@@ -31,7 +31,7 @@ class Data_Gatherer:
         df.to_csv(file)
         return file
 
-    def get_data(self, ticker, category, start_time, end_time, resolution):
+    def get_data(self, ticker, category, start_time, end_time, resolution, overwrite=True):
         """
         :param ticker: identifier of the asset (String)
         :param category: used to divide assets in different categories (String)
@@ -45,8 +45,12 @@ class Data_Gatherer:
 
         """
         file = self.get_file_path(ticker, category)
-        if not exists(file):
+
+        if overwrite:
             self.download_data(ticker, category, start_time, end_time, resolution)
+        else:
+            if not exists(file):
+                self.download_data(ticker, category, start_time, end_time, resolution)
 
         return pd.read_csv(file)
 
