@@ -5,6 +5,7 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from scipy import signal
 
 from data_gathering import Data_Gatherer
@@ -41,15 +42,14 @@ class Signal_Processor:
         y = signal.filtfilt(b, a, x, padlen=30)
         return y
 
-    def filter_signal(self, price_sequence, filter_type, filtering_factor):
+    def filter_signal(self, price_sequence, filter_type=0.5, filtering_factor="gaussian"):
         """
-        :param price_sequence:
+        :param price_sequence: price sequence data (Pandas Series format)
         :param filtering_factor: (idea) number between 0 and 1 that tells how aggressive is the filtering
         :param filter_type: Filter to be applied: Gaussian, Fourier, etc.
         :return: filtered sequence
         """
-
-        self._show_side_by_side()
+        return pd.Series(self._filter(price_sequence))
 
     def _show_side_by_side(self):
         sgnH, sgnL, sgnC = self._generate_syntethic_signal()
@@ -72,6 +72,9 @@ class Signal_Processor:
         plt.tight_layout()
         plt.show()
 
+    def test(self):
+        self._show_side_by_side(self)
+
 if __name__ == "__main__":
     sp = Signal_Processor()
-    sp.filter_signal(None,None,None)
+    sp.test()
