@@ -8,6 +8,7 @@
 
 import numpy as np
 import pandas as pd
+from sklearn.cluster import MeanShift, estimate_bandwidth
 
 class Support_Resistance_Finder:
     def __init__(self):
@@ -33,6 +34,8 @@ class Support_Resistance_Finder:
             return self._elementary_method(price_sequence)
         elif method == "volume":
             return self._volume_method(price_sequence, volume)
+        elif method == "mean_shift":
+            return self._mean_shift_clustering(price_sequence)
 
     def find_resistances(self, price_sequence, method, volume=None):
         """
@@ -83,7 +86,20 @@ class Support_Resistance_Finder:
         pass
 
     def _mean_shift_clustering(self, price_sequence):
-        pass
+        ps = price_sequence.values.reshape((-1,1))
+        bandwidth = estimate_bandwidth(ps, quantile=0.1, n_samples=100)
+        ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
+        ms.fit(ps)
+
+        ml_results = []
+        for k in range(len(np.unique(ms.labels_))):
+            my_members = ms.labels_ == k
+            values = price_sequence[my_members]
+            # find the edges
+            ml_results.append(min(values))
+            ml_results.append(max(values))
+
+        return ml_results
 
     def _so(self, price_sequence):
         pass
@@ -130,7 +146,8 @@ class Support_Resistance_Finder:
     def test_support_finder(self):
         s, sfiltered, df = self._get_test_data()
 
-        supports = self.find_supports(s,"volume",df['Volume'])
+        #supports = self.find_supports(s,"volume",df['Volume'])
+        supports = self.find_supports(s,"mean_shift")
         print(supports)
 
 if __name__ == "__main__":
