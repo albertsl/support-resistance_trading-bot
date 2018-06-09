@@ -4,6 +4,8 @@
 
 from datetime import datetime
 from data_gathering import Data_Gatherer
+from signal_processing import Signal_Processor
+from support_resistance_finder import Support_Resistance_Finder
 from visualization import Data_Visualizer
 
 def main():
@@ -20,7 +22,17 @@ def main():
     asset_categories = ['USAstocks','EUROPEANstocks','SPANISHstocks','FOREX','CRYPTO','COMMODITIES']
 
     dg = Data_Gatherer()
-    dg.get_data('GLW','USAstocks', start_date,end_date,1,True)
+    df = dg.get_data('GLW','USAstocks', start_date,end_date,1,False)
+    close_price = df['Close']
+
+    sp = Signal_Processor()
+    close_price_filtered = sp.filter_signal(close_price)
+
+    srf = Support_Resistance_Finder()
+    lr = srf.find_supports(close_price_filtered, "mean_shift")
+
+    dv = Data_Visualizer()
+    dv.plot_support_resistance(df, lr)
 
 if __name__ == "__main__":
     main()
