@@ -7,6 +7,7 @@ from data_gathering import Data_Gatherer
 from signal_processing import Signal_Processor
 from support_resistance_finder import Support_Resistance_Finder
 from visualization import Data_Visualizer
+from ml_models import ML_Models
 
 def main():
     start_year = 2016
@@ -33,6 +34,11 @@ def main():
 
     dv = Data_Visualizer()
     dv.plot_support_resistance(df, lr)
+
+    df2 = srf.tag_support_resistance(df, lr)
+
+    mlm = ML_Models()
+    mlm.random_forest(df2)
 
 if __name__ == "__main__":
     main()
