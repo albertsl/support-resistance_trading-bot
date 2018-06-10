@@ -150,6 +150,27 @@ class Support_Resistance_Finder:
         supports = self.find_supports(s,"mean_shift")
         print(supports)
 
+    def tag_support_resistance(self, data, levels, threshold=0.001):
+        """
+        :param data: Pandas DataFrame with stock data
+        :param levels: list with support and resistance levels
+        :param threshold: Threshold level at which a price is considered to be touching the support or resistance level
+        :return: input dataframe with additional column SR
+        """
+        lSR = [0] * data.shape[0]
+
+        for i, row in data.iterrows():
+            for level in levels:
+                current_price = data['Close'].iloc[i]
+                max_threshold = level + level * threshold
+                min_threshold = level - level * threshold
+
+                if current_price < max_threshold and current_price > min_threshold:
+                    lSR[i] = 1
+
+        data['SR'] = pd.Series(lSR)
+        return data
+
 if __name__ == "__main__":
     from data_gathering import Data_Gatherer
     from visualization import Data_Visualizer
