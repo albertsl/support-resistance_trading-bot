@@ -11,7 +11,6 @@ class Data_Gatherer:
     def __init__(self):
         pass
 
-
     def download_data(self, ticker, category, start_time, end_time, resolution):
         """
         :param ticker: identifier of the asset (String)
@@ -52,7 +51,7 @@ class Data_Gatherer:
             if not exists(file):
                 self.download_data(ticker, category, start_time, end_time, resolution)
 
-        return pd.read_csv(file)
+        return self._get_up_down(pd.read_csv(file))
 
     def get_file_path(self, ticker, category):
         """
@@ -66,3 +65,17 @@ class Data_Gatherer:
             makedirs(folder)
 
         return abspath(folder + '/' + ticker + '.csv')
+
+    def _get_up_down(self, data):
+        """
+        :param data: Pandas DataFrame with the stock data.
+        :return: same input DataFrame with additional boolean column up indicating if the value will go up or down on the next day
+
+        """
+        data['Up'] = data['Close'].shift(-1) - data['Close']
+        data['Up'] = data['Up'].apply(lambda x: x > 0)
+        data['Up'] = data['Up'].apply(int)
+
+        #Down not needed since the information is already inside Up. They are completely correlated
+        #data['Down'] = data['Up'].apply(lambda x: 1 if x==0 else 0)
+        return data
