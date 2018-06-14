@@ -29,7 +29,7 @@ class ML_Models:
         :return: x_train, x_test, y_train, y_test to give the ML model
 
         """
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2)
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, shuffle = False)
         return x_train, x_test, y_train, y_test
 
     def _results(self, y_test, predictions):
