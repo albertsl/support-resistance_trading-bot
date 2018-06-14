@@ -30,7 +30,7 @@ def main():
     close_price_filtered = sp.filter_signal(close_price)
 
     srf = Support_Resistance_Finder()
-    lr = srf.find_supports(close_price_filtered, "mean_shift")
+    lr = srf.find_supports(close_price_filtered, "mean_shift", params=0.2)
 
     dv = Data_Visualizer()
     dv.plot_support_resistance(df, lr)

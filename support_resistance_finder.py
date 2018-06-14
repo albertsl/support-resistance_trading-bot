@@ -13,7 +13,7 @@ from sklearn.cluster import MeanShift, estimate_bandwidth
 class Support_Resistance_Finder:
     def __init__(self):
         pass
-    def find_supports(self, price_sequence, method, volume=None):
+    def find_supports(self, price_sequence, method, volume=None, params=None):
         """
         :param price_sequence:
         :param method: string with the name of the method used to find resistances
@@ -35,7 +35,7 @@ class Support_Resistance_Finder:
         elif method == "volume":
             return self._volume_method(price_sequence, volume)
         elif method == "mean_shift":
-            return self._mean_shift_clustering(price_sequence)
+            return self._mean_shift_clustering(price_sequence, params)
 
     def find_resistances(self, price_sequence, method, volume=None):
         """
@@ -85,9 +85,9 @@ class Support_Resistance_Finder:
     def _pivot_points(self, price_sequence):
         pass
 
-    def _mean_shift_clustering(self, price_sequence):
+    def _mean_shift_clustering(self, price_sequence,q=0.1):
         ps = price_sequence.values.reshape((-1,1))
-        bandwidth = estimate_bandwidth(ps, quantile=0.1, n_samples=100)
+        bandwidth = estimate_bandwidth(ps, quantile=q, n_samples=100)
         ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
         ms.fit(ps)
 
